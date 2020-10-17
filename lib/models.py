@@ -6,6 +6,7 @@ from lib.nets.unet import UNet
 
 def load_model(cfg, local_rank=None):
     arch = cfg['training']['arch']
+    channels = cfg['training']['channels']
     mixed_precision = cfg['training'].get('mixed_precision', False)
     data_parallel = cfg['training']['data_parallel']
     n_outputs = len(cfg['data']['labels']['names'])
@@ -23,7 +24,7 @@ def load_model(cfg, local_rank=None):
         use_ds_conv = cfg['training'].get('ds_conv', False)
         if use_ds_conv:
             print(f"Using depthwise-separable convolutions for encoder")
-        model = UNet(n_channels=1, n_classes=n_outputs, use_ds_conv=use_ds_conv)
+        model = UNet(n_channels=1, n_classes=n_outputs, use_ds_conv=use_ds_conv, channels=tuple(channels))
     else:
         raise ValueError()
 
